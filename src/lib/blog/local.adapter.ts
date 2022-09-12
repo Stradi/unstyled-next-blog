@@ -31,7 +31,7 @@ export const getPostBySlug = async (slug: string): Promise<BlogPost> => {
 
   const fileDetails = await getFileWithDetails(markdownFilePath, true);
 
-  const renderableMarkdown = await convertToMarkdown(fileDetails.content);
+  const renderableMarkdown = await convertToMarkdown(fileDetails.content, slug);
   const authors = await populateAuthors(fileDetails.frontmatter.authors);
   const tags = await populateTags(fileDetails.frontmatter.tags);
 

@@ -32,4 +32,4 @@ yarn-error.log*
 # Vercel
 .vercel
 
-src/public/images/blog
+public/images/blog

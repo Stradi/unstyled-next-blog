@@ -3,8 +3,9 @@ import matter from 'gray-matter';
 import path from 'path';
 import { remark } from 'remark';
 import remarkHtml from 'remark-html';
+import { remarkNextImage } from '../blog/remark-next-image';
 
-const PUBLIC_DIR = path.resolve(process.cwd(), 'src', 'public');
+const PUBLIC_DIR = path.resolve(process.cwd(), 'public');
 
 export interface FileWithDetails {
   content: string;
@@ -58,7 +59,15 @@ export const moveImagesToPublicFolder = async (
   }
 };
 
-export const convertToMarkdown = async (content: string): Promise<string> => {
-  const result = await remark().use(remarkHtml).process(content);
+export const convertToMarkdown = async (
+  content: string,
+  slug: string
+): Promise<string> => {
+  const result = await remark()
+    .use(remarkHtml)
+    .use(remarkNextImage, {
+      publicPath: path.join('images', 'blog', slug).toString(),
+    })
+    .process(content);
   return result.toString();
 };
