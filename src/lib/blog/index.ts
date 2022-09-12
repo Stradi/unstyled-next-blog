@@ -1,3 +1,5 @@
+import * as LocalAdapter from './local.adapter';
+
 export interface BlogResource {
   name: string;
   slug: string;
@@ -100,8 +102,8 @@ export const getTagByName = async (
 const getAdapter = (adapter: BlogAdapter): IBlogAdapter => {
   switch (adapter) {
     case 'local':
-      return {} as IBlogAdapter;
+      return LocalAdapter;
     default:
-      return {} as IBlogAdapter;
+      return LocalAdapter;
   }
 };
