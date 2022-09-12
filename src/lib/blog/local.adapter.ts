@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { BlogAuthor, BlogPost, BlogTag } from '.';
-import { getFileWithDetails } from '../utils/file';
+import { getFileWithDetails, moveImagesToPublicFolder } from '../utils/file';
 import { slugify } from '../utils/slugify';
 
 const CONTENT_DIR = path.resolve(process.cwd(), '_content');
@@ -22,6 +22,8 @@ export const getAllPosts = async (): Promise<BlogPost[]> => {
 
 export const getPostBySlug = async (slug: string): Promise<BlogPost> => {
   const markdownFilePath = path.join(POSTS_DIR, slug, 'index.md');
+
+  await moveImagesToPublicFolder(POSTS_DIR, slug);
 
   const fileDetails = await getFileWithDetails(markdownFilePath, true);
   const authors = await populateAuthors(fileDetails.frontmatter.authors);
