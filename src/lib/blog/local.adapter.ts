@@ -5,10 +5,12 @@ import { getFileWithDetails } from '../utils/file';
 import { slugify } from '../utils/slugify';
 
 const CONTENT_DIR = path.resolve(process.cwd(), '_content');
+const POSTS_DIR = path.join(CONTENT_DIR, 'posts');
+const AUTHORS_DIR = path.join(CONTENT_DIR, 'authors');
+const TAGS_DIR = path.join(CONTENT_DIR, 'tags');
 
 export const getAllPosts = async (): Promise<BlogPost[]> => {
-  const directoryPath = path.join(CONTENT_DIR, 'posts');
-  const files = await fs.readdir(directoryPath);
+  const files = await fs.readdir(POSTS_DIR);
   const posts = [];
 
   for (const file of files) {
@@ -19,8 +21,7 @@ export const getAllPosts = async (): Promise<BlogPost[]> => {
 };
 
 export const getPostBySlug = async (slug: string): Promise<BlogPost> => {
-  const directoryPath = path.join(CONTENT_DIR, 'posts', slug);
-  const markdownFilePath = path.join(directoryPath, 'index.md');
+  const markdownFilePath = path.join(POSTS_DIR, slug, 'index.md');
 
   const fileDetails = await getFileWithDetails(markdownFilePath, true);
   const authors = await populateAuthors(fileDetails.frontmatter.authors);
@@ -54,8 +55,7 @@ export const getPostsByAuthor = async (name: string): Promise<BlogPost[]> => {
 };
 
 export const getAllAuthors = async (): Promise<BlogAuthor[]> => {
-  const filePath = path.join(CONTENT_DIR, 'authors');
-  const files = await fs.readdir(filePath);
+  const files = await fs.readdir(AUTHORS_DIR);
   const authors = [];
 
   for (const file of files) {
@@ -67,7 +67,7 @@ export const getAllAuthors = async (): Promise<BlogAuthor[]> => {
 
 export const getAuthorByName = async (name: string): Promise<BlogAuthor> => {
   const slug = slugify(name);
-  const filePath = path.join(CONTENT_DIR, 'authors', `${slug}.json`);
+  const filePath = path.join(AUTHORS_DIR, `${slug}.json`);
 
   const fileDetails = await getFileWithDetails(filePath, false);
   const json = JSON.parse(fileDetails.content);
@@ -87,8 +87,7 @@ export const getAuthorByName = async (name: string): Promise<BlogAuthor> => {
 };
 
 export const getAllTags = async (): Promise<BlogTag[]> => {
-  const filePath = path.join(CONTENT_DIR, 'tags');
-  const files = await fs.readdir(filePath);
+  const files = await fs.readdir(TAGS_DIR);
   const tags = [];
 
   for (const file of files) {
@@ -100,7 +99,7 @@ export const getAllTags = async (): Promise<BlogTag[]> => {
 
 export const getTagByName = async (name: string): Promise<BlogTag> => {
   const slug = slugify(name);
-  const filePath = path.join(CONTENT_DIR, 'tags', `${slug}.json`);
+  const filePath = path.join(TAGS_DIR, `${slug}.json`);
 
   const fileDetails = await getFileWithDetails(filePath, false);
   const json = JSON.parse(fileDetails.content);
