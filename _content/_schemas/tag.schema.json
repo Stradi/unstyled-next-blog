@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tag",
+  "description": "A tag is a label that can be attached to a blog post. Tags are metadata that can be used to organize a blog.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "description": "The name of the tag.",
+      "type": "string"
+    },
+    "description": {
+      "description": "A short description about the tag.",
+      "type": "string"
+    },
+    "image": {
+      "description": "The image of the tag.",
+      "type": "object",
+      "properties": {
+        "src": {
+          "description": "The URL of the image.",
+          "type": "string"
+        },
+        "alt": {
+          "description": "The alt text of the image.",
+          "type": "string"
+        }
+      }
+    }
+  }
+}

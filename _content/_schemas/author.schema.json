@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Author",
+  "description": "A person, organization, or service responsible for contributing the content of the blog post.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "description": "The name of the author.",
+      "type": "string"
+    },
+    "description": {
+      "description": "A short description of the author.",
+      "type": "string"
+    },
+    "image": {
+      "description": "The image of the author.",
+      "type": "object",
+      "properties": {
+        "src": {
+          "description": "The URL of the image.",
+          "type": "string"
+        },
+        "alt": {
+          "description": "The alt text of the image.",
+          "type": "string"
+        }
+      }
+    }
+  }
+}

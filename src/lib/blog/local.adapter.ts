@@ -2,6 +2,7 @@ import { BlogAuthor, BlogPost, BlogTag } from '.';
 import path from 'path';
 import fs from 'fs-extra';
 import matter from 'gray-matter';
+import { slugify } from '../utils/slugify';
 
 const CONTENT_DIR = path.resolve(process.cwd(), '_content');
 
@@ -57,42 +58,81 @@ export const getPostsByAuthor = async (name: string): Promise<BlogPost[]> => {
 };
 
 export const getAllAuthors = async (): Promise<BlogAuthor[]> => {
-  const filePath = path.join(CONTENT_DIR, 'authors.json');
-  const rawContent = await fs.readFile(filePath, 'utf-8');
-  const parsedContent = JSON.parse(rawContent);
+  const filePath = path.join(CONTENT_DIR, 'authors');
+  const files = await fs.readdir(filePath);
+  const authors = [];
 
-  return parsedContent as BlogAuthor[];
+  for (const file of files) {
+    authors.push(await getAuthorByName(file));
+  }
+
+  return authors;
 };
 
 export const getAuthorByName = async (name: string): Promise<BlogAuthor> => {
-  const filePath = path.join(CONTENT_DIR, 'authors.json');
-  const rawContent = await fs.readFile(filePath, 'utf-8');
-  const parsedContent = JSON.parse(rawContent);
+  const slug = slugify(name);
+  const filePath = path.join(CONTENT_DIR, 'authors', `${slug}.json`);
 
-  return parsedContent.find((author) => author.name === name) as BlogAuthor;
+  const rawContent = await fs.readFile(filePath, 'utf-8');
+  const fileStats = await fs.stat(filePath);
+
+  const json = JSON.parse(rawContent);
+  delete json['$schema'];
+
+  return {
+    name: json.name,
+    slug,
+    description: json.description,
+    createdAt: fileStats.birthtime,
+    updatedAt: fileStats.mtime,
+    image: {
+      src: json.image.src,
+      alt: json.image.alt,
+    },
+  } as BlogAuthor;
 };
 
 export const getAllTags = async (): Promise<BlogTag[]> => {
-  const filePath = path.join(CONTENT_DIR, 'tags.json');
-  const rawContent = await fs.readFile(filePath, 'utf-8');
-  const parsedContent = JSON.parse(rawContent);
+  const filePath = path.join(CONTENT_DIR, 'tags');
+  const files = await fs.readdir(filePath);
+  const tags = [];
 
-  return parsedContent as BlogTag[];
+  for (const file of files) {
+    tags.push(await getTagByName(file));
+  }
+
+  return tags;
 };
 
 export const getTagByName = async (name: string): Promise<BlogTag> => {
-  const filePath = path.join(CONTENT_DIR, 'tags.json');
-  const rawContent = await fs.readFile(filePath, 'utf-8');
-  const parsedContent = JSON.parse(rawContent);
+  const slug = slugify(name);
+  const filePath = path.join(CONTENT_DIR, 'tags', `${slug}.json`);
 
-  return parsedContent.find((tag) => tag.name === name) as BlogTag;
+  const rawContent = await fs.readFile(filePath, 'utf-8');
+  const fileStats = await fs.stat(filePath);
+
+  const json = JSON.parse(rawContent);
+  delete json['$schema'];
+
+  return {
+    name: json.name,
+    slug,
+    description: json.description,
+    createdAt: fileStats.birthtime,
+    updatedAt: fileStats.mtime,
+    image: {
+      src: json.image.src,
+      alt: json.image.alt,
+    },
+  } as BlogTag;
 };
 
 const populateAuthors = async (names: string[]): Promise<BlogAuthor[]> => {
   const authors = [];
 
   for (const name of names) {
-    authors.push(await getAuthorByName(name));
+    const slug = slugify(name);
+    authors.push(await getAuthorByName(slug));
   }
 
   return authors;
@@ -101,7 +141,8 @@ const populateAuthors = async (names: string[]): Promise<BlogAuthor[]> => {
 const populateTags = async (names: string[]): Promise<BlogTag[]> => {
   const tags = [];
   for (const name of names) {
-    tags.push(await getTagByName(name));
+    const slug = slugify(name);
+    tags.push(await getTagByName(slug));
   }
 
   return tags;
