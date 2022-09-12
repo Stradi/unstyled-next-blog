@@ -3,5 +3,13 @@
   "version": "0.0.1",
   "description": "A unstyled feature-packed Next.js blog",
   "author": "Batın Evirgen <batinevirgen@gmail.com> (https://batin.sh)",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
+    "husky": "^8.0.1"
+  }
 }
