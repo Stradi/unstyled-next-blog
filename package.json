@@ -9,7 +9,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prettier": "prettier --write ."
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
@@ -17,7 +18,8 @@
     "@types/react": "18.0.19",
     "eslint": "8.23.1",
     "eslint-config-next": "12.3.0",
-    "husky": "^8.0.1"
+    "husky": "^8.0.1",
+    "prettier": "^2.7.1"
   },
   "dependencies": {
     "next": "^12.3.0",
