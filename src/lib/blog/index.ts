@@ -22,6 +22,7 @@ export interface BlogTag extends BlogResource {
 }
 
 export interface BlogPost extends BlogResource {
+  content: string;
   image: BlogImage;
   authors: BlogAuthor[];
   tags: BlogTag[];

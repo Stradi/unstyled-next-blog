@@ -1,6 +1,8 @@
 import fs from 'fs-extra';
 import matter from 'gray-matter';
 import path from 'path';
+import { remark } from 'remark';
+import remarkHtml from 'remark-html';
 
 const PUBLIC_DIR = path.resolve(process.cwd(), 'src', 'public');
 
@@ -54,4 +56,9 @@ export const moveImagesToPublicFolder = async (
       path.join(destination, file)
     );
   }
+};
+
+export const convertToMarkdown = async (content: string): Promise<string> => {
+  const result = await remark().use(remarkHtml).process(content);
+  return result.toString();
 };

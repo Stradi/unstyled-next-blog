@@ -1,7 +1,11 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { BlogAuthor, BlogPost, BlogTag } from '.';
-import { getFileWithDetails, moveImagesToPublicFolder } from '../utils/file';
+import {
+  convertToMarkdown,
+  getFileWithDetails,
+  moveImagesToPublicFolder,
+} from '../utils/file';
 import { slugify } from '../utils/slugify';
 
 const CONTENT_DIR = path.resolve(process.cwd(), '_content');
@@ -26,6 +30,8 @@ export const getPostBySlug = async (slug: string): Promise<BlogPost> => {
   await moveImagesToPublicFolder(POSTS_DIR, slug);
 
   const fileDetails = await getFileWithDetails(markdownFilePath, true);
+
+  const renderableMarkdown = await convertToMarkdown(fileDetails.content);
   const authors = await populateAuthors(fileDetails.frontmatter.authors);
   const tags = await populateTags(fileDetails.frontmatter.tags);
 
@@ -35,6 +41,7 @@ export const getPostBySlug = async (slug: string): Promise<BlogPost> => {
     description: fileDetails.frontmatter.description,
     createdAt: new Date(fileDetails.details.birthtime),
     updatedAt: new Date(fileDetails.details.mtime),
+    content: renderableMarkdown,
     image: {
       src: fileDetails.frontmatter.image.src,
       alt: fileDetails.frontmatter.image.alt,
