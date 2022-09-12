@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { BlogPost } from '../../lib/blog';
+import { toReadableDate } from '../../lib/utils/date';
 
 export interface ArticleProps
   extends React.ComponentPropsWithoutRef<'article'> {
@@ -18,7 +19,7 @@ const Article = ({ post, ...rest }: ArticleProps) => {
       <footer>
         <p>Posted by {post.authors.map((author) => author.name).join(', ')}.</p>
         <p>
-          Published at <time>{post.createdAt.toString()}</time>.
+          Published at <time>{toReadableDate(post.createdAt)}</time>.
         </p>
       </footer>
     </article>
