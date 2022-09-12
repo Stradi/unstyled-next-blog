@@ -45,7 +45,8 @@ export const getAllPosts = async (
   adapter: BlogAdapter
 ): Promise<BlogPost[]> => {
   const selectedAdapter = getAdapter(adapter);
-  return await selectedAdapter.getAllPosts();
+  const result = await selectedAdapter.getAllPosts();
+  return serializeAsJSON<BlogPost[]>(result);
 };
 
 export const getPostBySlug = async (
@@ -53,7 +54,8 @@ export const getPostBySlug = async (
   slug: string
 ): Promise<BlogPost> => {
   const selectedAdapter = getAdapter(adapter);
-  return await selectedAdapter.getPostBySlug(slug);
+  const result = await selectedAdapter.getPostBySlug(slug);
+  return serializeAsJSON<BlogPost>(result);
 };
 
 export const getPostsByTag = async (
@@ -61,7 +63,8 @@ export const getPostsByTag = async (
   name: string
 ): Promise<BlogPost[]> => {
   const selectedAdapter = getAdapter(adapter);
-  return await selectedAdapter.getPostsByTag(name);
+  const result = await selectedAdapter.getPostsByTag(name);
+  return serializeAsJSON<BlogPost[]>(result);
 };
 
 export const getPostsByAuthor = async (
@@ -69,14 +72,16 @@ export const getPostsByAuthor = async (
   name: string
 ): Promise<BlogPost[]> => {
   const selectedAdapter = getAdapter(adapter);
-  return await selectedAdapter.getPostsByAuthor(name);
+  const result = await selectedAdapter.getPostsByAuthor(name);
+  return serializeAsJSON<BlogPost[]>(result);
 };
 
 export const getAllAuthors = async (
   adapter: BlogAdapter
 ): Promise<BlogAuthor[]> => {
   const selectedAdapter = getAdapter(adapter);
-  return await selectedAdapter.getAllAuthors();
+  const result = await selectedAdapter.getAllAuthors();
+  return serializeAsJSON<BlogAuthor[]>(result);
 };
 
 export const getAuthorByName = async (
@@ -84,12 +89,14 @@ export const getAuthorByName = async (
   name: string
 ): Promise<BlogAuthor> => {
   const selectedAdapter = getAdapter(adapter);
-  return await selectedAdapter.getAuthorByName(name);
+  const result = await selectedAdapter.getAuthorByName(name);
+  return serializeAsJSON<BlogAuthor>(result);
 };
 
 export const getAllTags = async (adapter: BlogAdapter): Promise<BlogTag[]> => {
   const selectedAdapter = getAdapter(adapter);
-  return await selectedAdapter.getAllTags();
+  const result = await selectedAdapter.getAllTags();
+  return serializeAsJSON<BlogTag[]>(result);
 };
 
 export const getTagByName = async (
@@ -97,7 +104,8 @@ export const getTagByName = async (
   name: string
 ): Promise<BlogTag> => {
   const selectedAdapter = getAdapter(adapter);
-  return await selectedAdapter.getTagByName(name);
+  const result = await selectedAdapter.getTagByName(name);
+  return serializeAsJSON<BlogTag>(result);
 };
 
 const getAdapter = (adapter: BlogAdapter): IBlogAdapter => {
@@ -107,4 +115,8 @@ const getAdapter = (adapter: BlogAdapter): IBlogAdapter => {
     default:
       return LocalAdapter;
   }
+};
+
+const serializeAsJSON = <T>(data: any): T => {
+  return JSON.parse(JSON.stringify(data));
 };
