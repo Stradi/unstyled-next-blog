@@ -1,0 +1,9 @@
+{
+  "$schema": "../_schemas/tag.schema.json",
+  "name": "Psychology",
+  "description": "Psychology is the science of behavior and mind, including conscious and unconscious phenomena, as well as feeling and thought. It is an academic discipline of immense scope and diverse interests that, when taken together, seek an understanding of the emergent properties of brains, and all the variety of epiphenomena they manifest. As a social science it aims to understand individuals and groups by establishing general principles and researching specific cases.",
+  "image": {
+    "src": "",
+    "alt": "A picture of human brain"
+  }
+}

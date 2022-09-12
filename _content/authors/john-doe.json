@@ -1,0 +1,9 @@
+{
+  "$schema": "../_schemas/author.schema.json",
+  "name": "John Doe",
+  "description": "John Doe is a developer relations engineer at Acme Corp.",
+  "image": {
+    "src": "",
+    "alt": ""
+  }
+}

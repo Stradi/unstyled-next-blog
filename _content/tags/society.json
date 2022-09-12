@@ -1,0 +1,9 @@
+{
+  "$schema": "../_schemas/tag.schema.json",
+  "name": "Society",
+  "description": "Society is a collection of people who share a common culture and institutions.",
+  "image": {
+    "src": "",
+    "alt": "A picture of a group of people"
+  }
+}

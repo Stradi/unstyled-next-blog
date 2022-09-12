@@ -1,0 +1,9 @@
+{
+  "$schema": "../_schemas/author.schema.json",
+  "name": "Jane Doe",
+  "description": "Jane Doe is a vice president of engineering at Acme Corp.",
+  "image": {
+    "src": "",
+    "alt": ""
+  }
+}
