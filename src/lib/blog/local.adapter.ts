@@ -62,7 +62,7 @@ export async function getAllAuthors(): Promise<BlogAuthor[]> {
   const authors = [];
 
   for (const file of files) {
-    authors.push(await getAuthorByName(file));
+    authors.push(await getAuthorByName(file.split('.')[0]));
   }
 
   return authors;
