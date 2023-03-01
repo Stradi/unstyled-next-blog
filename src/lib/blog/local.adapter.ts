@@ -1,11 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { BlogAuthor, BlogPost, BlogTag } from '.';
-import {
-  convertToMarkdown,
-  getFileWithDetails,
-  moveImagesToPublicFolder,
-} from '@/lib/utils/file';
+import { convertToMarkdown, getFileWithDetails, moveImagesToPublicFolder } from '@/lib/utils/file';
 import { slugify } from '@/lib/utils/slugify';
 
 const CONTENT_DIR = path.resolve(process.cwd(), '_content');
@@ -58,9 +54,7 @@ export async function getPostsByTag(name: string): Promise<BlogPost[]> {
 
 export async function getPostsByAuthor(name: string): Promise<BlogPost[]> {
   const allPosts = await getAllPosts();
-  return allPosts.filter((post) =>
-    post.authors.some((author) => author.name === name)
-  );
+  return allPosts.filter((post) => post.authors.some((author) => author.name === name));
 }
 
 export async function getAllAuthors(): Promise<BlogAuthor[]> {
@@ -95,12 +89,32 @@ export async function getAuthorByName(name: string): Promise<BlogAuthor> {
   } as BlogAuthor;
 }
 
+export async function getAuthorBySlug(slug: string): Promise<BlogAuthor> {
+  const filePath = path.join(AUTHORS_DIR, `${slug}.json`);
+
+  const fileDetails = await getFileWithDetails(filePath, false);
+  const json = JSON.parse(fileDetails.content);
+  delete json['$schema'];
+
+  return {
+    name: json.name,
+    slug,
+    description: json.description,
+    createdAt: fileDetails.details.birthtime,
+    updatedAt: fileDetails.details.mtime,
+    image: {
+      src: json.image.src,
+      alt: json.image.alt,
+    },
+  } as BlogAuthor;
+}
+
 export async function getAllTags(): Promise<BlogTag[]> {
   const files = await fs.readdir(TAGS_DIR);
   const tags = [];
 
   for (const file of files) {
-    tags.push(await getTagByName(file));
+    tags.push(await getTagByName(file.split('.')[0]));
   }
 
   return tags;
@@ -108,6 +122,26 @@ export async function getAllTags(): Promise<BlogTag[]> {
 
 export async function getTagByName(name: string): Promise<BlogTag> {
   const slug = slugify(name);
+  const filePath = path.join(TAGS_DIR, `${slug}.json`);
+
+  const fileDetails = await getFileWithDetails(filePath, false);
+  const json = JSON.parse(fileDetails.content);
+  delete json['$schema'];
+
+  return {
+    name: json.name,
+    slug,
+    description: json.description,
+    createdAt: fileDetails.details.birthtime,
+    updatedAt: fileDetails.details.mtime,
+    image: {
+      src: json.image.src,
+      alt: json.image.alt,
+    },
+  } as BlogTag;
+}
+
+export async function getTagBySlug(slug: string): Promise<BlogTag> {
   const filePath = path.join(TAGS_DIR, `${slug}.json`);
 
   const fileDetails = await getFileWithDetails(filePath, false);

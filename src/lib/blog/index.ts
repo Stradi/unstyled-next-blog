@@ -37,8 +37,10 @@ export interface IBlogAdapter {
   getPostsByAuthor: (author: string) => Promise<BlogPost[]>;
   getAllAuthors: () => Promise<BlogAuthor[]>;
   getAuthorByName: (name: string) => Promise<BlogAuthor>;
+  getAuthorBySlug: (slug: string) => Promise<BlogAuthor>;
   getAllTags: () => Promise<BlogTag[]>;
   getTagByName: (name: string) => Promise<BlogTag>;
+  getTagBySlug: (slug: string) => Promise<BlogTag>;
 }
 
 export async function getAllPosts(adapter: BlogAdapter): Promise<BlogPost[]> {
@@ -47,47 +49,39 @@ export async function getAllPosts(adapter: BlogAdapter): Promise<BlogPost[]> {
   return serializeAsJSON<BlogPost[]>(result);
 }
 
-export async function getPostBySlug(
-  adapter: BlogAdapter,
-  slug: string
-): Promise<BlogPost> {
+export async function getPostBySlug(adapter: BlogAdapter, slug: string): Promise<BlogPost> {
   const selectedAdapter = getAdapter(adapter);
   const result = await selectedAdapter.getPostBySlug(slug);
   return serializeAsJSON<BlogPost>(result);
 }
 
-export async function getPostsByTag(
-  adapter: BlogAdapter,
-  name: string
-): Promise<BlogPost[]> {
+export async function getPostsByTag(adapter: BlogAdapter, name: string): Promise<BlogPost[]> {
   const selectedAdapter = getAdapter(adapter);
   const result = await selectedAdapter.getPostsByTag(name);
   return serializeAsJSON<BlogPost[]>(result);
 }
 
-export async function getPostsByAuthor(
-  adapter: BlogAdapter,
-  name: string
-): Promise<BlogPost[]> {
+export async function getPostsByAuthor(adapter: BlogAdapter, name: string): Promise<BlogPost[]> {
   const selectedAdapter = getAdapter(adapter);
   const result = await selectedAdapter.getPostsByAuthor(name);
   return serializeAsJSON<BlogPost[]>(result);
 }
 
-export async function getAllAuthors(
-  adapter: BlogAdapter
-): Promise<BlogAuthor[]> {
+export async function getAllAuthors(adapter: BlogAdapter): Promise<BlogAuthor[]> {
   const selectedAdapter = getAdapter(adapter);
   const result = await selectedAdapter.getAllAuthors();
   return serializeAsJSON<BlogAuthor[]>(result);
 }
 
-export async function getAuthorByName(
-  adapter: BlogAdapter,
-  name: string
-): Promise<BlogAuthor> {
+export async function getAuthorByName(adapter: BlogAdapter, name: string): Promise<BlogAuthor> {
   const selectedAdapter = getAdapter(adapter);
   const result = await selectedAdapter.getAuthorByName(name);
+  return serializeAsJSON<BlogAuthor>(result);
+}
+
+export async function getAuthorBySlug(adapter: BlogAdapter, slug: string): Promise<BlogAuthor> {
+  const selectedAdapter = getAdapter(adapter);
+  const result = await selectedAdapter.getAuthorBySlug(slug);
   return serializeAsJSON<BlogAuthor>(result);
 }
 
@@ -97,12 +91,15 @@ export async function getAllTags(adapter: BlogAdapter): Promise<BlogTag[]> {
   return serializeAsJSON<BlogTag[]>(result);
 }
 
-export async function getTagByName(
-  adapter: BlogAdapter,
-  name: string
-): Promise<BlogTag> {
+export async function getTagByName(adapter: BlogAdapter, name: string): Promise<BlogTag> {
   const selectedAdapter = getAdapter(adapter);
   const result = await selectedAdapter.getTagByName(name);
+  return serializeAsJSON<BlogTag>(result);
+}
+
+export async function getTagBySlug(adapter: BlogAdapter, slug: string): Promise<BlogTag> {
+  const selectedAdapter = getAdapter(adapter);
+  const result = await selectedAdapter.getTagBySlug(slug);
   return serializeAsJSON<BlogTag>(result);
 }
 
