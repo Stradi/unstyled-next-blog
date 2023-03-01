@@ -2,6 +2,7 @@ import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { BlogPost, getAllPosts, getPostBySlug } from '@/lib/blog';
 import { toReadableDate } from '@/lib/utils/date';
+import Article from '@/components/Article';
 
 interface PageProps {
   post: BlogPost;
@@ -9,37 +10,27 @@ interface PageProps {
 
 export default function Page({ post }: PageProps) {
   return (
-    <article>
-      <header>
+    <Article>
+      <Article.Header>
         <h1>{post.name}</h1>
         <p>{post.description}</p>
         <p>
-          Written by{' '}
-          <span>{post.authors.map((author) => author.name).join(', ')}.</span>
+          Written by <span>{post.authors.map((author) => author.name).join(', ')}.</span>
         </p>
+        <p>This post is tagged with {post.tags.map((tag) => tag.name).join(', ')}.</p>
+      </Article.Header>
+      <Article.Body dangerouslySetInnerHTML={{ __html: post.content }} />
+      <Article.Footer>
         <p>
-          This post is tagged with {post.tags.map((tag) => tag.name).join(', ')}
-          .
+          Published at <time>{toReadableDate(post.createdAt)}</time> and updated at{' '}
+          <time>{toReadableDate(post.updatedAt)}</time>.
         </p>
-      </header>
-      <section
-        dangerouslySetInnerHTML={{
-          __html: post.content,
-        }}
-      />
-      <footer>
-        <p>
-          Published at <time>{toReadableDate(post.createdAt)}</time> and updated
-          at <time>{toReadableDate(post.updatedAt)}</time>.
-        </p>
-      </footer>
-    </article>
+      </Article.Footer>
+    </Article>
   );
 }
 
-export const getStaticProps: GetStaticProps<PageProps, Params> = async ({
-  params,
-}) => {
+export const getStaticProps: GetStaticProps<PageProps, Params> = async ({ params }) => {
   const post = await getPostBySlug('local', params.slug);
 
   return {
