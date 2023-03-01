@@ -1,4 +1,4 @@
-export const toReadableDate = (date: string | Date) => {
+export function toReadableDate(date: string | Date) {
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: 'long',
@@ -6,4 +6,4 @@ export const toReadableDate = (date: string | Date) => {
   };
 
   return new Date(date).toLocaleDateString('en-US', options);
-};
+}

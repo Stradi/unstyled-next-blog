@@ -5,15 +5,15 @@ import {
   convertToMarkdown,
   getFileWithDetails,
   moveImagesToPublicFolder,
-} from '../utils/file';
-import { slugify } from '../utils/slugify';
+} from '@/lib/utils/file';
+import { slugify } from '@/lib/utils/slugify';
 
 const CONTENT_DIR = path.resolve(process.cwd(), '_content');
 const POSTS_DIR = path.join(CONTENT_DIR, 'posts');
 const AUTHORS_DIR = path.join(CONTENT_DIR, 'authors');
 const TAGS_DIR = path.join(CONTENT_DIR, 'tags');
 
-export const getAllPosts = async (): Promise<BlogPost[]> => {
+export async function getAllPosts(): Promise<BlogPost[]> {
   const files = await fs.readdir(POSTS_DIR);
   const posts = [];
 
@@ -22,9 +22,9 @@ export const getAllPosts = async (): Promise<BlogPost[]> => {
   }
 
   return posts;
-};
+}
 
-export const getPostBySlug = async (slug: string): Promise<BlogPost> => {
+export async function getPostBySlug(slug: string): Promise<BlogPost> {
   const markdownFilePath = path.join(POSTS_DIR, slug, 'index.md');
 
   await moveImagesToPublicFolder(POSTS_DIR, slug);
@@ -49,21 +49,21 @@ export const getPostBySlug = async (slug: string): Promise<BlogPost> => {
     authors,
     tags,
   } as BlogPost;
-};
+}
 
-export const getPostsByTag = async (name: string): Promise<BlogPost[]> => {
+export async function getPostsByTag(name: string): Promise<BlogPost[]> {
   const allPosts = await getAllPosts();
   return allPosts.filter((post) => post.tags.some((tag) => tag.name === name));
-};
+}
 
-export const getPostsByAuthor = async (name: string): Promise<BlogPost[]> => {
+export async function getPostsByAuthor(name: string): Promise<BlogPost[]> {
   const allPosts = await getAllPosts();
   return allPosts.filter((post) =>
     post.authors.some((author) => author.name === name)
   );
-};
+}
 
-export const getAllAuthors = async (): Promise<BlogAuthor[]> => {
+export async function getAllAuthors(): Promise<BlogAuthor[]> {
   const files = await fs.readdir(AUTHORS_DIR);
   const authors = [];
 
@@ -72,9 +72,9 @@ export const getAllAuthors = async (): Promise<BlogAuthor[]> => {
   }
 
   return authors;
-};
+}
 
-export const getAuthorByName = async (name: string): Promise<BlogAuthor> => {
+export async function getAuthorByName(name: string): Promise<BlogAuthor> {
   const slug = slugify(name);
   const filePath = path.join(AUTHORS_DIR, `${slug}.json`);
 
@@ -93,9 +93,9 @@ export const getAuthorByName = async (name: string): Promise<BlogAuthor> => {
       alt: json.image.alt,
     },
   } as BlogAuthor;
-};
+}
 
-export const getAllTags = async (): Promise<BlogTag[]> => {
+export async function getAllTags(): Promise<BlogTag[]> {
   const files = await fs.readdir(TAGS_DIR);
   const tags = [];
 
@@ -104,9 +104,9 @@ export const getAllTags = async (): Promise<BlogTag[]> => {
   }
 
   return tags;
-};
+}
 
-export const getTagByName = async (name: string): Promise<BlogTag> => {
+export async function getTagByName(name: string): Promise<BlogTag> {
   const slug = slugify(name);
   const filePath = path.join(TAGS_DIR, `${slug}.json`);
 
@@ -125,9 +125,9 @@ export const getTagByName = async (name: string): Promise<BlogTag> => {
       alt: json.image.alt,
     },
   } as BlogTag;
-};
+}
 
-const populateAuthors = async (names: string[]): Promise<BlogAuthor[]> => {
+async function populateAuthors(names: string[]): Promise<BlogAuthor[]> {
   const authors = [];
 
   for (const name of names) {
@@ -136,9 +136,9 @@ const populateAuthors = async (names: string[]): Promise<BlogAuthor[]> => {
   }
 
   return authors;
-};
+}
 
-const populateTags = async (names: string[]): Promise<BlogTag[]> => {
+async function populateTags(names: string[]): Promise<BlogTag[]> {
   const tags = [];
   for (const name of names) {
     const slug = slugify(name);
@@ -146,4 +146,4 @@ const populateTags = async (names: string[]): Promise<BlogTag[]> => {
   }
 
   return tags;
-};
+}

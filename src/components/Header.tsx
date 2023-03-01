@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import NavigationConfig from '../../../config/Navigation.config';
-import SiteConfig from '../../../config/Site.config';
+import NavigationConfig from '@/config/Navigation.config';
+import SiteConfig from '@/config/Site.config';
 
 export interface HeaderProps extends React.ComponentPropsWithoutRef<'header'> {}
 
-const Header = ({ ...rest }: HeaderProps) => {
+export default function Header({ ...rest }: HeaderProps) {
   const navigationItems = NavigationConfig.items;
   const siteName = SiteConfig.siteName;
 
@@ -24,6 +24,4 @@ const Header = ({ ...rest }: HeaderProps) => {
       </nav>
     </header>
   );
-};
-
-export { Header };
+}

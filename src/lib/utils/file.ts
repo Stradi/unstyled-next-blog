@@ -3,7 +3,7 @@ import matter from 'gray-matter';
 import path from 'path';
 import { remark } from 'remark';
 import remarkHtml from 'remark-html';
-import { remarkNextImage } from '../blog/remark-next-image';
+import { remarkNextImage } from '@/lib/blog/remark-next-image';
 
 const PUBLIC_DIR = path.resolve(process.cwd(), 'public');
 
@@ -15,10 +15,10 @@ export interface FileWithDetails {
   };
 }
 
-export const getFileWithDetails = async (
+export async function getFileWithDetails(
   filePath: fs.PathLike,
   parseFrontmatter?: boolean
-): Promise<FileWithDetails> => {
+): Promise<FileWithDetails> {
   const content = await fs.readFile(filePath, 'utf-8');
   const details = await fs.stat(filePath);
 
@@ -36,12 +36,12 @@ export const getFileWithDetails = async (
     content,
     details,
   } as FileWithDetails;
-};
+}
 
-export const moveImagesToPublicFolder = async (
+export async function moveImagesToPublicFolder(
   sourceDirectory,
   slug: string
-): Promise<void> => {
+): Promise<void> {
   const destination = path.join(PUBLIC_DIR, 'images', 'blog', slug);
   await fs.ensureDir(destination);
 
@@ -57,12 +57,12 @@ export const moveImagesToPublicFolder = async (
       path.join(destination, file)
     );
   }
-};
+}
 
-export const convertToMarkdown = async (
+export async function convertToMarkdown(
   content: string,
   slug: string
-): Promise<string> => {
+): Promise<string> {
   const result = await remark()
     .use(remarkHtml)
     .use(remarkNextImage, {
@@ -70,4 +70,4 @@ export const convertToMarkdown = async (
     })
     .process(content);
   return result.toString();
-};
+}

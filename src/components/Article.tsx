@@ -1,13 +1,13 @@
 import Link from 'next/link';
-import { BlogPost } from '../../lib/blog';
-import { toReadableDate } from '../../lib/utils/date';
+import { BlogPost } from '@/lib/blog';
+import { toReadableDate } from '@/lib/utils/date';
 
 export interface ArticleProps
   extends React.ComponentPropsWithoutRef<'article'> {
   post: BlogPost;
 }
 
-const Article = ({ post, ...rest }: ArticleProps) => {
+export default function Article({ post, ...rest }: ArticleProps) {
   return (
     <article {...rest}>
       <header>
@@ -24,6 +24,4 @@ const Article = ({ post, ...rest }: ArticleProps) => {
       </footer>
     </article>
   );
-};
-
-export { Article };
+}

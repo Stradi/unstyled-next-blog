@@ -1,9 +1,9 @@
-import { Footer } from '../Footer';
-import { Header } from '../Header';
+import Footer from './Footer';
+import Header from './Header';
 
 export interface LayoutProps extends React.ComponentPropsWithoutRef<'div'> {}
 
-const Layout = ({ children, ...rest }: LayoutProps) => {
+export default function Layout({ children, ...rest }: LayoutProps) {
   return (
     <>
       <Header />
@@ -11,6 +11,4 @@ const Layout = ({ children, ...rest }: LayoutProps) => {
       <Footer />
     </>
   );
-};
-
-export { Layout };
+}

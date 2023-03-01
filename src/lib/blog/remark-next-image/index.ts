@@ -26,7 +26,7 @@ interface ImageNode {
   position: NodePosition;
 }
 
-export const remarkNextImage = ({ publicPath }: Options) => {
+export function remarkNextImage({ publicPath }: Options) {
   if (!publicPath) {
     throw new Error(
       '`publicPath` option is missing in "remark-next-image" plugin.'
@@ -42,4 +42,4 @@ export const remarkNextImage = ({ publicPath }: Options) => {
   };
 
   return transform;
-};
+}

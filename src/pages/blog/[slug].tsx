@@ -1,15 +1,13 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { ParsedUrlQuery } from 'querystring';
-import { BlogPost, getAllPosts, getPostBySlug } from '../../lib/blog';
-import { toReadableDate } from '../../lib/utils/date';
+import { BlogPost, getAllPosts, getPostBySlug } from '@/lib/blog';
+import { toReadableDate } from '@/lib/utils/date';
 
-interface BlogSlugPageProps {
+interface PageProps {
   post: BlogPost;
 }
 
-const BlogSlugPage: NextPage<BlogSlugPageProps> = ({
-  post,
-}: BlogSlugPageProps) => {
+export default function Page({ post }: PageProps) {
   return (
     <article>
       <header>
@@ -37,12 +35,11 @@ const BlogSlugPage: NextPage<BlogSlugPageProps> = ({
       </footer>
     </article>
   );
-};
+}
 
-export const getStaticProps: GetStaticProps<
-  BlogSlugPageProps,
-  Params
-> = async ({ params }) => {
+export const getStaticProps: GetStaticProps<PageProps, Params> = async ({
+  params,
+}) => {
   const post = await getPostBySlug('local', params.slug);
 
   return {
@@ -67,5 +64,3 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
     fallback: 'blocking',
   };
 };
-
-export default BlogSlugPage;
