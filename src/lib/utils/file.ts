@@ -15,10 +15,7 @@ export interface FileWithDetails {
   };
 }
 
-export async function getFileWithDetails(
-  filePath: fs.PathLike,
-  parseFrontmatter?: boolean
-): Promise<FileWithDetails> {
+export async function getFileWithDetails(filePath: fs.PathLike, parseFrontmatter?: boolean): Promise<FileWithDetails> {
   const content = await fs.readFile(filePath, 'utf-8');
   const details = await fs.stat(filePath);
 
@@ -38,10 +35,7 @@ export async function getFileWithDetails(
   } as FileWithDetails;
 }
 
-export async function moveImagesToPublicFolder(
-  sourceDirectory,
-  slug: string
-): Promise<void> {
+export async function moveImagesToPublicFolder(sourceDirectory, slug: string): Promise<void> {
   const destination = path.join(PUBLIC_DIR, 'images', 'blog', slug);
   await fs.ensureDir(destination);
 
@@ -52,17 +46,11 @@ export async function moveImagesToPublicFolder(
   });
 
   for (const file of imageFiles) {
-    await fs.copyFile(
-      path.join(sourceDirectory, slug, file),
-      path.join(destination, file)
-    );
+    await fs.copyFile(path.join(sourceDirectory, slug, file), path.join(destination, file));
   }
 }
 
-export async function convertToMarkdown(
-  content: string,
-  slug: string
-): Promise<string> {
+export async function convertToMarkdown(content: string, slug: string): Promise<string> {
   const result = await remark()
     .use(remarkHtml)
     .use(remarkNextImage, {
