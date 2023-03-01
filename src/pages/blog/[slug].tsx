@@ -47,11 +47,11 @@ interface Params extends ParsedUrlQuery {
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
   const allPosts = await getAllPosts('local');
   const paths = allPosts.map((post) => ({
-    params: { slug: post.name },
+    params: { slug: post.slug },
   }));
 
   return {
     paths,
-    fallback: 'blocking',
+    fallback: false,
   };
 };
