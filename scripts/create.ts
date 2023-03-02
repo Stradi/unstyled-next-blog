@@ -117,13 +117,17 @@ async function createFile(path: string, content: string) {
 }
 
 async function createResource(type: 'post' | 'author' | 'tag', name: string) {
-  const slug = slugify(name, { lower: true });
+  function encode(str: string) {
+    return str.replace(/'/g, "''");
+  }
+
+  const slug = slugify(name, { lower: true, strict: true });
   let filePath = path.resolve(__dirname, '..', '_content', `${type}s`);
 
   const content = {
-    post: POST_TEMPLATE.replace(/{name}/g, name),
-    author: AUTHOR_TEMPLATE.replace(/{name}/g, name),
-    tag: TAG_TEMPLATE.replace(/{name}/g, name),
+    post: POST_TEMPLATE.replace(/{name}/g, encode(name)),
+    author: AUTHOR_TEMPLATE.replace(/{name}/g, encode(name)),
+    tag: TAG_TEMPLATE.replace(/{name}/g, encode(name)),
   };
 
   if (type === 'post') {
@@ -156,7 +160,7 @@ async function main() {
     argv.type = response.type;
   }
   const response = await promptQuestions(questions[argv.type]);
-  const slug = slugify(response.name, { lower: true });
+  const slug = slugify(response.name, { lower: true, strict: true });
 
   if (await isResourceExists(argv.type, slug)) {
     console.error(`Looks like there is already a ${argv.type} with the name '${response.name}' exists.`);
