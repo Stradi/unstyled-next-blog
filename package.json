@@ -10,22 +10,30 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "create": "tsx scripts/create.ts",
+    "create:post": "tsx scripts/create.ts --type post",
+    "create:author": "tsx scripts/create.ts --type author",
+    "create:tag": "tsx scripts/create.ts --type tag"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.4",
     "@commitlint/config-conventional": "^17.4.4",
     "@types/fs-extra": "^11.0.1",
+    "@types/prompts": "^2.4.2",
     "@types/react": "18.0.28",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
     "husky": "^8.0.3",
-    "prettier": "^2.8.4"
+    "prettier": "^2.8.4",
+    "tsx": "^3.12.3"
   },
   "dependencies": {
     "fs-extra": "^11.1.0",
     "gray-matter": "^4.0.3",
+    "minimist": "^1.2.8",
     "next": "^13.2.3",
+    "prompts": "^2.4.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "remark": "^14.0.2",
