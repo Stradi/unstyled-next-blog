@@ -14,7 +14,8 @@
     "create": "tsx scripts/create.ts",
     "create:post": "tsx scripts/create.ts --type post",
     "create:author": "tsx scripts/create.ts --type author",
-    "create:tag": "tsx scripts/create.ts --type tag"
+    "create:tag": "tsx scripts/create.ts --type tag",
+    "check": "tsx scripts/check.ts"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.4",
