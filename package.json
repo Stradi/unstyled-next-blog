@@ -6,8 +6,10 @@
   "license": "MIT",
   "scripts": {
     "prepare": "husky install",
+    "predev": "npm run build-search-index",
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "npm run build-search-index",
     "start": "next start",
     "lint": "next lint",
     "prettier": "prettier --write .",
@@ -15,7 +17,8 @@
     "create:post": "tsx scripts/create.ts --type post",
     "create:author": "tsx scripts/create.ts --type author",
     "create:tag": "tsx scripts/create.ts --type tag",
-    "check": "tsx scripts/check.ts"
+    "check": "tsx scripts/check.ts",
+    "build-search-index": "tsx scripts/build-search-index.ts"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.4",
