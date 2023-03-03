@@ -55,3 +55,10 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
     fallback: false,
   };
 };
+
+Page.getSeo = function getSeo(props: PageProps) {
+  return {
+    title: props.post.name,
+    description: props.post.description,
+  } as TPageSeo;
+};

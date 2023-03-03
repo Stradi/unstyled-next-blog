@@ -68,3 +68,10 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
     fallback: false,
   };
 };
+
+Page.getSeo = function getSeo(props: PageProps) {
+  return {
+    title: props.author.name,
+    description: props.author.description,
+  };
+};

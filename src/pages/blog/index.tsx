@@ -38,3 +38,10 @@ export const getStaticProps: GetStaticProps<PageProps> = async () => {
     },
   };
 };
+
+Page.getSeo = function getSeo() {
+  return {
+    title: 'Blog',
+    description: 'All blog posts',
+  } as TPageSeo;
+};

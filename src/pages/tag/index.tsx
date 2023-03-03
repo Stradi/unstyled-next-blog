@@ -38,3 +38,10 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
     },
   };
 };
+
+Page.getSeo = function getSeo(props: PageProps) {
+  return {
+    title: 'All Tags',
+    description: 'All tags on this blog',
+  };
+};

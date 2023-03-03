@@ -1,9 +1,9 @@
 export interface IConfig {
   site: {
     name: string;
-    description: string;
     url: string;
     image: string;
+    defaultSeo: TPageSeo;
   };
   navigation: {
     items: {
@@ -17,9 +17,24 @@ export interface IConfig {
 export default {
   site: {
     name: 'Unstyled Next Blog',
-    description: 'A unstyled blog built with Next.js.',
-    url: 'https://unstyled-next-blog.vercel.app/',
+    url: 'https://unstyled-next-blog.vercel.app',
     image: '',
+    defaultSeo: {
+      title: 'Unstyled Next Blog',
+      titleTemplate: '%s | Unstyled Next Blog',
+      description: 'A unstyled blog built with Next.js.',
+      noindex: false,
+      nofollow: false,
+      twitter: {
+        cardType: 'summary_large_image',
+        site: '@unstyled-next-blog',
+        handle: '@unstyled-next-blog',
+      },
+      openGraph: {
+        type: 'website',
+        locale: 'en_US',
+      },
+    },
   },
   navigation: {
     items: [
