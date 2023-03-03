@@ -7,6 +7,7 @@ Unstyled Next Blog is a simple blog template built with one and only Next.js. It
 - Fast (just like every Next.js app)
 - Local Markdown adapter
 - Error checker for local Markdown adapter
+- Instant search
 
 <sub>I will try to find more features to add here, I promise.<sub>
 
