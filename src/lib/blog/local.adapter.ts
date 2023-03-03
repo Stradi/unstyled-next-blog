@@ -1,7 +1,12 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { BlogAuthor, BlogPost, BlogTag } from '.';
-import { convertToMarkdown, getFileWithDetails, moveImagesToPublicFolder } from '@/lib/utils/file';
+import {
+  convertToMarkdown,
+  getFileWithDetails,
+  moveImagesToPublicFolder,
+  moveImageToPublicFolder,
+} from '@/lib/utils/file';
 import { slugify } from '@/lib/utils/slugify';
 
 const CONTENT_DIR = path.resolve(process.cwd(), '_content');
@@ -62,7 +67,12 @@ export async function getAllAuthors(): Promise<BlogAuthor[]> {
   const authors = [];
 
   for (const file of files) {
-    authors.push(await getAuthorByName(file.split('.')[0]));
+    const ext = path.extname(file);
+    if (ext !== '.json') continue;
+
+    const filename = path.basename(file, ext);
+
+    authors.push(await getAuthorBySlug(filename));
   }
 
   return authors;
@@ -76,6 +86,10 @@ export async function getAuthorByName(name: string): Promise<BlogAuthor> {
   const json = JSON.parse(fileDetails.content);
   delete json['$schema'];
 
+  if (json.image.src !== '') {
+    moveImageToPublicFolder('authors', `${path.join(AUTHORS_DIR, json.image.src)}`);
+  }
+
   return {
     name: json.name,
     slug,
@@ -83,7 +97,7 @@ export async function getAuthorByName(name: string): Promise<BlogAuthor> {
     createdAt: fileDetails.details.birthtime,
     updatedAt: fileDetails.details.mtime,
     image: {
-      src: json.image.src,
+      src: `/images/authors/${json.image.src}`,
       alt: json.image.alt,
     },
   } as BlogAuthor;
@@ -96,6 +110,10 @@ export async function getAuthorBySlug(slug: string): Promise<BlogAuthor> {
   const json = JSON.parse(fileDetails.content);
   delete json['$schema'];
 
+  if (json.image.src !== '') {
+    moveImageToPublicFolder('authors', `${path.join(AUTHORS_DIR, json.image.src)}`);
+  }
+
   return {
     name: json.name,
     slug,
@@ -103,7 +121,7 @@ export async function getAuthorBySlug(slug: string): Promise<BlogAuthor> {
     createdAt: fileDetails.details.birthtime,
     updatedAt: fileDetails.details.mtime,
     image: {
-      src: json.image.src,
+      src: `/images/authors/${json.image.src}`,
       alt: json.image.alt,
     },
   } as BlogAuthor;
@@ -114,7 +132,12 @@ export async function getAllTags(): Promise<BlogTag[]> {
   const tags = [];
 
   for (const file of files) {
-    tags.push(await getTagByName(file.split('.')[0]));
+    const ext = path.extname(file);
+    if (ext !== '.json') continue;
+
+    const filename = path.basename(file, ext);
+
+    tags.push(await getTagBySlug(filename));
   }
 
   return tags;
@@ -128,6 +151,10 @@ export async function getTagByName(name: string): Promise<BlogTag> {
   const json = JSON.parse(fileDetails.content);
   delete json['$schema'];
 
+  if (json.image.src !== '') {
+    moveImageToPublicFolder('tags', `${path.join(TAGS_DIR, json.image.src)}`);
+  }
+
   return {
     name: json.name,
     slug,
@@ -135,7 +162,7 @@ export async function getTagByName(name: string): Promise<BlogTag> {
     createdAt: fileDetails.details.birthtime,
     updatedAt: fileDetails.details.mtime,
     image: {
-      src: json.image.src,
+      src: `/images/tags/${json.image.src}`,
       alt: json.image.alt,
     },
   } as BlogTag;
@@ -148,6 +175,10 @@ export async function getTagBySlug(slug: string): Promise<BlogTag> {
   const json = JSON.parse(fileDetails.content);
   delete json['$schema'];
 
+  if (json.image.src !== '') {
+    moveImageToPublicFolder('tags', `${path.join(TAGS_DIR, json.image.src)}`);
+  }
+
   return {
     name: json.name,
     slug,
@@ -155,7 +186,7 @@ export async function getTagBySlug(slug: string): Promise<BlogTag> {
     createdAt: fileDetails.details.birthtime,
     updatedAt: fileDetails.details.mtime,
     image: {
-      src: json.image.src,
+      src: `/images/tags/${json.image.src}`,
       alt: json.image.alt,
     },
   } as BlogTag;

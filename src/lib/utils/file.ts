@@ -35,7 +35,7 @@ export async function getFileWithDetails(filePath: fs.PathLike, parseFrontmatter
   } as FileWithDetails;
 }
 
-export async function moveImagesToPublicFolder(sourceDirectory, slug: string): Promise<void> {
+export async function moveImagesToPublicFolder(sourceDirectory: string, slug: string): Promise<void> {
   const destination = path.join(PUBLIC_DIR, 'images', 'blog', slug);
   await fs.ensureDir(destination);
 
@@ -48,6 +48,13 @@ export async function moveImagesToPublicFolder(sourceDirectory, slug: string): P
   for (const file of imageFiles) {
     await fs.copyFile(path.join(sourceDirectory, slug, file), path.join(destination, file));
   }
+}
+
+export async function moveImageToPublicFolder(destinationPath: string, sourceFile: string): Promise<void> {
+  const destination = path.join(PUBLIC_DIR, 'images', destinationPath);
+  await fs.ensureDir(destination);
+
+  await fs.copyFile(sourceFile, path.join(destination, path.basename(sourceFile)));
 }
 
 export async function convertToMarkdown(content: string, slug: string): Promise<string> {
