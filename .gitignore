@@ -33,3 +33,5 @@ yarn-error.log*
 .vercel
 
 public/images/blog
+public/images/authors
+public/images/tags
