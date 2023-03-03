@@ -1,5 +1,6 @@
 import path from 'path';
-import { Node, visit } from 'unist-util-visit';
+import { visit } from 'unist-util-visit';
+import { Node } from 'unist-util-visit/lib';
 
 export interface Options {
   publicPath: string;
