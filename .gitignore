@@ -35,3 +35,4 @@ yarn-error.log*
 public/images/blog
 public/images/authors
 public/images/tags
+public/search-index.json
