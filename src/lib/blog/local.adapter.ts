@@ -39,7 +39,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost> {
     updatedAt: new Date(fileDetails.details.mtime),
     content: renderableMarkdown,
     image: {
-      src: fileDetails.frontmatter.image.src,
+      src: `/images/blog/${slug}/${fileDetails.frontmatter.image.src}`,
       alt: fileDetails.frontmatter.image.alt,
     },
     authors,
