@@ -46,6 +46,10 @@ export default {
         label: 'Blog',
         href: '/blog',
       },
+      {
+        label: 'Search',
+        href: '/search',
+      },
     ],
   },
 } as IConfig;
