@@ -42,6 +42,17 @@ const TAG_TEMPLATE = `{
   }
 }`;
 
+const STATIC_PAGE_TEMPLATE = `---
+name: '{name}'
+description: ''
+image:
+  src: ''
+  alt: ''
+---
+
+# {name}
+`;
+
 type TQuestions = {
   [key: string]: prompts.PromptObject[];
 };
@@ -61,6 +72,10 @@ const questions: TQuestions = {
         {
           title: 'Tag',
           value: 'tag',
+        },
+        {
+          title: 'Static Page',
+          value: 'page',
         },
       ],
     },
@@ -86,6 +101,13 @@ const questions: TQuestions = {
       message: 'What is the name of the tag?',
     },
   ],
+  page: [
+    {
+      type: 'text',
+      name: 'name',
+      message: 'What is the name of the static page?',
+    },
+  ],
 };
 
 async function promptQuestions(questions: PromptObject[]) {
@@ -98,7 +120,7 @@ async function promptQuestions(questions: PromptObject[]) {
   return response;
 }
 
-async function isResourceExists(type: 'post' | 'author' | 'tag', slug: string) {
+async function isResourceExists(type: 'post' | 'author' | 'tag' | 'page', slug: string) {
   switch (type) {
     case 'author':
       return (await getAllAuthors()).includes(slug);
@@ -106,6 +128,8 @@ async function isResourceExists(type: 'post' | 'author' | 'tag', slug: string) {
       return (await getAllTags()).includes(slug);
     case 'post':
       return (await getAllPosts()).includes(slug);
+    case 'page':
+      return (await getAllStaticPages()).includes(slug);
     default:
       return false;
   }
@@ -116,7 +140,7 @@ async function createFile(path: string, content: string) {
   await fs.writeFile(path, content);
 }
 
-async function createResource(type: 'post' | 'author' | 'tag', name: string) {
+async function createResource(type: 'post' | 'author' | 'tag' | 'page', name: string) {
   function encode(str: string) {
     return str.replace(/'/g, "''");
   }
@@ -128,9 +152,10 @@ async function createResource(type: 'post' | 'author' | 'tag', name: string) {
     post: POST_TEMPLATE.replace(/{name}/g, encode(name)),
     author: AUTHOR_TEMPLATE.replace(/{name}/g, encode(name)),
     tag: TAG_TEMPLATE.replace(/{name}/g, encode(name)),
+    page: STATIC_PAGE_TEMPLATE.replace(/{name}/g, encode(name)),
   };
 
-  if (type === 'post') {
+  if (type === 'post' || type === 'page') {
     filePath = path.resolve(filePath, slug, `index.md`);
   } else {
     filePath = path.resolve(filePath, `${slug}.json`);
@@ -152,6 +177,11 @@ async function getAllTags() {
 async function getAllPosts() {
   const posts = await fs.readdir(path.resolve(__dirname, '..', '_content', 'posts'));
   return posts;
+}
+
+async function getAllStaticPages() {
+  const pages = await fs.readdir(path.resolve(__dirname, '..', '_content', 'pages'));
+  return pages;
 }
 
 async function main() {
