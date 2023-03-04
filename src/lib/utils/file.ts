@@ -35,8 +35,12 @@ export async function getFileWithDetails(filePath: fs.PathLike, parseFrontmatter
   } as FileWithDetails;
 }
 
-export async function moveImagesToPublicFolder(sourceDirectory: string, slug: string): Promise<void> {
-  const destination = path.join(PUBLIC_DIR, 'images', 'blog', slug);
+export async function moveImagesToPublicFolder(
+  sourceDirectory: string,
+  slug: string,
+  type: 'blog' | 'pages' = 'blog'
+): Promise<void> {
+  const destination = path.join(PUBLIC_DIR, 'images', type, slug);
   await fs.ensureDir(destination);
 
   const allFiles = await fs.readdir(path.join(sourceDirectory, slug));
@@ -57,11 +61,15 @@ export async function moveImageToPublicFolder(destinationPath: string, sourceFil
   await fs.copyFile(sourceFile, path.join(destination, path.basename(sourceFile)));
 }
 
-export async function convertToMarkdown(content: string, slug: string): Promise<string> {
+export async function convertToMarkdown(
+  content: string,
+  slug: string,
+  type: 'blog' | 'pages' = 'blog'
+): Promise<string> {
   const result = await remark()
     .use(remarkHtml)
     .use(remarkNextImage, {
-      publicPath: path.join('images', 'blog', slug).toString(),
+      publicPath: path.join('images', type, slug).toString(),
     })
     .process(content);
   return result.toString();

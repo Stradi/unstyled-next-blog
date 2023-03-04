@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
-import { BlogAuthor, BlogPost, BlogTag } from '.';
+import { BlogAuthor, BlogPost, BlogTag, StaticPage } from '.';
 import {
   convertToMarkdown,
   getFileWithDetails,
@@ -13,6 +13,7 @@ const CONTENT_DIR = path.resolve(process.cwd(), '_content');
 const POSTS_DIR = path.join(CONTENT_DIR, 'posts');
 const AUTHORS_DIR = path.join(CONTENT_DIR, 'authors');
 const TAGS_DIR = path.join(CONTENT_DIR, 'tags');
+const STATIC_PAGES_DIR = path.join(CONTENT_DIR, 'pages');
 
 export async function getAllPosts(): Promise<BlogPost[]> {
   const files = await fs.readdir(POSTS_DIR);
@@ -190,6 +191,38 @@ export async function getTagBySlug(slug: string): Promise<BlogTag> {
       alt: json.image.alt,
     },
   } as BlogTag;
+}
+
+export async function getAllStaticPages(): Promise<StaticPage[]> {
+  const files = await fs.readdir(STATIC_PAGES_DIR);
+  const pages = [];
+
+  for (const file of files) {
+    pages.push(await getStaticPageBySlug(file));
+  }
+
+  return pages;
+}
+
+export async function getStaticPageBySlug(slug: string): Promise<StaticPage> {
+  const markdownFilePath = path.join(STATIC_PAGES_DIR, slug, 'index.md');
+  await moveImagesToPublicFolder(STATIC_PAGES_DIR, slug, 'pages');
+
+  const fileDetails = await getFileWithDetails(markdownFilePath, true);
+  const renderableMarkdown = await convertToMarkdown(fileDetails.content, slug, 'pages');
+
+  return {
+    name: fileDetails.frontmatter.name,
+    slug,
+    description: fileDetails.frontmatter.description,
+    createdAt: new Date(fileDetails.details.birthtime),
+    updatedAt: new Date(fileDetails.details.mtime),
+    content: renderableMarkdown,
+    image: {
+      src: `/images/pages/${slug}/${fileDetails.frontmatter.image.src}`,
+      alt: fileDetails.frontmatter.image.alt,
+    },
+  } as StaticPage;
 }
 
 async function populateAuthors(names: string[]): Promise<BlogAuthor[]> {

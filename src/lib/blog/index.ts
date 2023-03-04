@@ -28,6 +28,10 @@ export interface BlogPost extends BlogResource {
   tags: BlogTag[];
 }
 
+export interface StaticPage extends BlogResource {
+  content: string;
+}
+
 export type BlogAdapter = 'local';
 
 export interface IBlogAdapter {
@@ -41,6 +45,9 @@ export interface IBlogAdapter {
   getAllTags: () => Promise<BlogTag[]>;
   getTagByName: (name: string) => Promise<BlogTag>;
   getTagBySlug: (slug: string) => Promise<BlogTag>;
+
+  getAllStaticPages: () => Promise<StaticPage[]>;
+  getStaticPageBySlug: (slug: string) => Promise<StaticPage>;
 }
 
 export async function getAllPosts(adapter: BlogAdapter): Promise<BlogPost[]> {
@@ -95,6 +102,18 @@ export async function getTagByName(adapter: BlogAdapter, name: string): Promise<
   const selectedAdapter = getAdapter(adapter);
   const result = await selectedAdapter.getTagByName(name);
   return serializeAsJSON<BlogTag>(result);
+}
+
+export async function getAllStaticPages(adapter: BlogAdapter): Promise<StaticPage[]> {
+  const selectedAdapter = getAdapter(adapter);
+  const result = await selectedAdapter.getAllStaticPages();
+  return serializeAsJSON<StaticPage[]>(result);
+}
+
+export async function getStaticPageBySlug(adapter: BlogAdapter, slug: string): Promise<StaticPage> {
+  const selectedAdapter = getAdapter(adapter);
+  const result = await selectedAdapter.getStaticPageBySlug(slug);
+  return serializeAsJSON<StaticPage>(result);
 }
 
 export async function getTagBySlug(adapter: BlogAdapter, slug: string): Promise<BlogTag> {
