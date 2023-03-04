@@ -25,12 +25,26 @@ export default function App({ Component, pageProps }: AppPropsWithSEO) {
   const pathname = usePathname();
   const currentUrl = `${config.site.url}${pathname}`;
 
+  let imageTags = <></>;
+  const shouldIncludeImage = seo.image !== false;
+  if (shouldIncludeImage) {
+    const imageUrl = seo.image || `${config.site.url}/api/og?title=${seo.title}&subtitle=${seo.description}`;
+    imageTags = (
+      <>
+        <meta property="og:image" content={imageUrl} />
+        <meta name="twitter:image" content={imageUrl} />
+      </>
+    );
+  }
+
   return (
     <Layout>
       <Head>
         {seo.title && <title>{getTitle(seo)}</title>}
         {seo.title && <meta property="og:title" content={seo.title} />}
         {seo.title && <meta name="twitter:title" content={seo.title} />}
+
+        {imageTags}
 
         {seo.canonical && <link rel="canonical" href={seo.canonical} />}
         <meta property="og:url" content={currentUrl} />
