@@ -10,6 +10,7 @@ Unstyled Next Blog is a simple blog template built with one and only Next.js. It
 - Instant search
 - Automatic sitemap generation
 - Automatic OG image generation
+- Static pages (such as /about, /contact, etc.)
 
 <sub>I will try to find more features to add here, I promise.<sub>
 
@@ -137,6 +138,7 @@ This `create` command will first ask you for the type of resource you want to cr
 >   Blog Post
     Author
     Tag
+    Static Page
 ```
 
 After that, it will ask you for the name of the resource you want to create.
