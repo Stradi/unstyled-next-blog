@@ -37,7 +37,23 @@ type TTagError = {
   filePath: string;
 };
 
-type TError = TPostError | TAuthorError | TTagError;
+type TStaticPageError = {
+  message: string;
+  type:
+    | 'CORRUPT'
+    | 'NOT_EXISTS'
+    | 'NO_FRONTMATTER'
+    | 'NO_NAME'
+    | 'NO_DESCRIPTION'
+    | 'NO_IMAGE'
+    | 'EMPTY_NAME'
+    | 'EMPTY_DESCRIPTON'
+    | 'NO_CONTENT';
+  resource: 'static-page';
+  filePath: string;
+};
+
+type TError = TPostError | TAuthorError | TTagError | TStaticPageError;
 
 function prettyPrintError(error: TError) {
   console.log(`
@@ -60,6 +76,11 @@ async function getAllTags() {
 
 async function getAllPosts() {
   const posts = await fs.readdir(path.resolve(__dirname, '..', '_content', 'posts'));
+  return posts;
+}
+
+async function getAllStaticPages() {
+  const posts = await fs.readdir(path.resolve(__dirname, '..', '_content', 'pages'));
   return posts;
 }
 
@@ -269,12 +290,62 @@ async function checkTag(name: string, errors: TError[]) {
   });
 }
 
+async function checkPage(slug: string, errors: TError[]) {
+  const requiredFields = ['name', 'description', 'image'];
+
+  const filePath = path.resolve(__dirname, '..', '_content', 'pages', slug, 'index.md');
+  const contents = await fs.readFile(filePath);
+
+  let frontmatter = null;
+  try {
+    frontmatter = matter(contents.toString());
+  } catch {
+    errors.push({
+      message: 'Frontmatter could not be parsed',
+      type: 'CORRUPT',
+      resource: 'static-page',
+      filePath,
+    });
+    return;
+  }
+
+  if (!frontmatter.data) {
+    errors.push({
+      message: 'Frontmatter could not be found',
+      type: 'NO_FRONTMATTER',
+      resource: 'static-page',
+      filePath,
+    });
+  } else {
+    requiredFields.forEach((field) => {
+      if (!(field in frontmatter.data)) {
+        errors.push({
+          message: `'${field}' could not be found in the frontmatter`,
+          type: `NO_${field.toUpperCase()}` as TStaticPageError['type'],
+          resource: 'static-page',
+          filePath,
+        });
+      }
+    });
+  }
+
+  if (!frontmatter.content) {
+    errors.push({
+      message: 'Content could not be found',
+      type: 'NO_CONTENT',
+      resource: 'static-page',
+      filePath,
+    });
+  }
+}
+
 async function main() {
   const posts = await getAllPosts();
   const authors = await getAllAuthors();
   const tags = await getAllTags();
+  const staticPages = await getAllStaticPages();
 
-  console.log(`Found ${posts.length + authors.length + tags.length} files to check.`);
+  console.log(`Found ${posts.length + authors.length + tags.length + staticPages.length} files to check.`);
 
   const requiredAuthors = new Set<string>();
   const requiredTags = new Set<string>();
@@ -293,6 +364,10 @@ async function main() {
 
   for (const tag of Array.from(requiredTags)) {
     await checkTag(tag, errors);
+  }
+
+  for (const page of staticPages) {
+    await checkPage(page, errors);
   }
 
   if (errors.length > 0) {
