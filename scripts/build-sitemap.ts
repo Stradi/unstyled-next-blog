@@ -70,9 +70,21 @@ async function getAllPosts() {
   return folders.map((folder) => generateUrlData(path.join(dir, folder, 'index.md'), folder, 'blog'));
 }
 
+async function getAllStaticPages() {
+  const dir = path.resolve(__dirname, '..', '_content', 'pages');
+  const folders = await fs.readdir(dir);
+
+  return folders.map((folder) => generateUrlData(path.join(dir, folder, 'index.md'), folder, 'page'));
+}
+
 async function main() {
   console.log('Generating sitemap.xml...');
-  const resources = [...(await getAllPosts()), ...(await getAllAuthors()), ...(await getAllTags())];
+  const resources = [
+    ...(await getAllPosts()),
+    ...(await getAllAuthors()),
+    ...(await getAllTags()),
+    ...(await getAllStaticPages()),
+  ];
 
   console.log(`Found ${resources.length} resources.`);
 
@@ -81,10 +93,15 @@ async function main() {
   sitemap += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
   for (const resource of resources) {
     let finalUrl = URL_TEMPLATE;
-    finalUrl = finalUrl.replace('%loc%', `${config.site.url}/${resource.type}/${resource.slug}`);
     finalUrl = finalUrl.replace('%lastmod%', resource.lastModified.toISOString());
     finalUrl = finalUrl.replace('%changefreq%', resource.changeFreq);
     finalUrl = finalUrl.replace('%priority%', resource.priority.toString());
+    if (resource.type === 'page') {
+      finalUrl = finalUrl.replace('%loc%', `${config.site.url}/${resource.slug}`);
+    } else {
+      finalUrl = finalUrl.replace('%loc%', `${config.site.url}/${resource.type}/${resource.slug}`);
+    }
+
     sitemap += finalUrl;
   }
 
