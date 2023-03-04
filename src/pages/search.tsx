@@ -29,11 +29,20 @@ export default function Page() {
       <input id="search" type="text" value={query} onChange={(e) => setQuery(e.target.value)} />
       {results ? (
         <ul>
-          {results.map((result) => (
-            <Link key={result.id} href={`/${result.document.type}/${result.document.slug}`}>
-              <li>{result.document.name}</li>
-            </Link>
-          ))}
+          {results.map((result) => {
+            let href = '';
+            if (result.document.type === 'page') {
+              href = `/${result.document.slug}`;
+            } else {
+              href = `/${result.document.type}/${result.document.slug}`;
+            }
+
+            return (
+              <Link key={result.id} href={href}>
+                <li>{result.document.name}</li>
+              </Link>
+            );
+          })}
         </ul>
       ) : (
         hasSearchedOnce && <p>No results found.</p>

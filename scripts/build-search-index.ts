@@ -62,6 +62,27 @@ async function getAllPosts() {
   return posts;
 }
 
+async function getAllStaticPages() {
+  const dir = path.resolve(__dirname, '..', '_content', 'pages');
+  const folders = await fs.readdir(dir);
+
+  const posts = [];
+  for (const folder of folders) {
+    const content = await fs.readFile(path.join(dir, folder, 'index.md'));
+    const parsed = matter(content);
+
+    posts.push({
+      type: 'page',
+      name: parsed.data.name,
+      slug: folder,
+      description: parsed.data.description,
+      content: parsed.content,
+    });
+  }
+
+  return posts;
+}
+
 async function main() {
   console.log('Building search index...');
   const index = await create({
@@ -78,8 +99,9 @@ async function main() {
   const authors = await getAllAuthors();
   const tags = await getAllTags();
   const posts = await getAllPosts();
+  const pages = await getAllStaticPages();
 
-  const allContent = [...authors, ...tags, ...posts];
+  const allContent = [...authors, ...tags, ...posts, ...pages];
 
   console.log('Inserting content into the index...');
   await insertBatch(index, allContent);
