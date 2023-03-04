@@ -18,7 +18,8 @@
     "create:author": "tsx scripts/create.ts --type author",
     "create:tag": "tsx scripts/create.ts --type tag",
     "check": "tsx scripts/check.ts",
-    "build-search-index": "tsx scripts/build-search-index.ts"
+    "build-search-index": "tsx scripts/build-search-index.ts",
+    "build-sitemap": "tsx scripts/build-sitemap.ts"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.4",
