@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@lyrasearch/lyra": "^0.4.10",
+    "@vercel/og": "^0.3.0",
     "fs-extra": "^11.1.0",
     "gray-matter": "^4.0.3",
     "minimist": "^1.2.8",
