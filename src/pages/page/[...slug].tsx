@@ -3,6 +3,7 @@ import { ParsedUrlQuery } from 'querystring';
 import { getAllStaticPages, getStaticPageBySlug, StaticPage } from '@/lib/blog';
 import { toReadableDate } from '@/lib/utils/date';
 import Article from '@/components/Article';
+import MDXRenderer from '@/components/MDXRenderer';
 
 interface PageProps {
   page: StaticPage;
@@ -15,7 +16,9 @@ export default function Page({ page }: PageProps) {
         <h1>{page.name}</h1>
         <p>{page.description}</p>
       </Article.Header>
-      <Article.Body dangerouslySetInnerHTML={{ __html: page.content }} />
+      <Article.Body>
+        <MDXRenderer content={page.content} />
+      </Article.Body>
       <Article.Footer>
         <p>
           Published at <time>{toReadableDate(page.createdAt)}</time> and updated at{' '}

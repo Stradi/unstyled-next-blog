@@ -1,4 +1,5 @@
 import * as LocalAdapter from './local.adapter';
+import { MDXRemoteSerializeResult } from 'next-mdx-remote';
 
 export interface BlogResource {
   name: string;
@@ -22,14 +23,14 @@ export interface BlogTag extends BlogResource {
 }
 
 export interface BlogPost extends BlogResource {
-  content: string;
+  content: MDXRemoteSerializeResult;
   image: BlogImage;
   authors: BlogAuthor[];
   tags: BlogTag[];
 }
 
 export interface StaticPage extends BlogResource {
-  content: string;
+  content: MDXRemoteSerializeResult;
 }
 
 export type BlogAdapter = 'local';

@@ -1,9 +1,9 @@
 import fs from 'fs-extra';
 import matter from 'gray-matter';
 import path from 'path';
-import { remark } from 'remark';
-import remarkHtml from 'remark-html';
 import { remarkNextImage } from '@/lib/blog/remark-next-image';
+import { serialize } from 'next-mdx-remote/serialize';
+import { MDXRemoteSerializeResult } from 'next-mdx-remote';
 
 const PUBLIC_DIR = path.resolve(process.cwd(), 'public');
 
@@ -65,12 +65,11 @@ export async function convertToMarkdown(
   content: string,
   slug: string,
   type: 'blog' | 'pages' = 'blog'
-): Promise<string> {
-  const result = await remark()
-    .use(remarkHtml)
-    .use(remarkNextImage, {
-      publicPath: path.join('images', type, slug).toString(),
-    })
-    .process(content);
-  return result.toString();
+): Promise<MDXRemoteSerializeResult> {
+  return await serialize(content, {
+    mdxOptions: {
+      remarkPlugins: [[remarkNextImage, { publicPath: path.join('images', type, slug).toString() }]],
+    },
+    parseFrontmatter: true,
+  });
 }

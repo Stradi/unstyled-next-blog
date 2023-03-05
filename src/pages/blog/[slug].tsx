@@ -3,6 +3,7 @@ import { ParsedUrlQuery } from 'querystring';
 import { BlogPost, getAllPosts, getPostBySlug } from '@/lib/blog';
 import { toReadableDate } from '@/lib/utils/date';
 import Article from '@/components/Article';
+import MDXRenderer from '@/components/MDXRenderer';
 
 interface PageProps {
   post: BlogPost;
@@ -19,7 +20,9 @@ export default function Page({ post }: PageProps) {
         </p>
         <p>This post is tagged with {post.tags.map((tag) => tag.name).join(', ')}.</p>
       </Article.Header>
-      <Article.Body dangerouslySetInnerHTML={{ __html: post.content }} />
+      <Article.Body>
+        <MDXRenderer content={post.content} />
+      </Article.Body>
       <Article.Footer>
         <p>
           Published at <time>{toReadableDate(post.createdAt)}</time> and updated at{' '}
