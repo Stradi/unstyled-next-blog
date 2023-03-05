@@ -67,14 +67,14 @@ async function getAllPosts() {
   const dir = path.resolve(__dirname, '..', '_content', 'posts');
   const folders = await fs.readdir(dir);
 
-  return folders.map((folder) => generateUrlData(path.join(dir, folder, 'index.md'), folder, 'blog'));
+  return folders.map((folder) => generateUrlData(path.join(dir, folder, 'index.mdx'), folder, 'blog'));
 }
 
 async function getAllStaticPages() {
   const dir = path.resolve(__dirname, '..', '_content', 'pages');
   const folders = await fs.readdir(dir);
 
-  return folders.map((folder) => generateUrlData(path.join(dir, folder, 'index.md'), folder, 'page'));
+  return folders.map((folder) => generateUrlData(path.join(dir, folder, 'index.mdx'), folder, 'page'));
 }
 
 async function main() {

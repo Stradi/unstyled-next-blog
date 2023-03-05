@@ -27,7 +27,7 @@ export async function getAllPosts(): Promise<BlogPost[]> {
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPost> {
-  const markdownFilePath = path.join(POSTS_DIR, slug, 'index.md');
+  const markdownFilePath = path.join(POSTS_DIR, slug, 'index.mdx');
 
   await moveImagesToPublicFolder(POSTS_DIR, slug);
 
@@ -205,7 +205,7 @@ export async function getAllStaticPages(): Promise<StaticPage[]> {
 }
 
 export async function getStaticPageBySlug(slug: string): Promise<StaticPage> {
-  const markdownFilePath = path.join(STATIC_PAGES_DIR, slug, 'index.md');
+  const markdownFilePath = path.join(STATIC_PAGES_DIR, slug, 'index.mdx');
   await moveImagesToPublicFolder(STATIC_PAGES_DIR, slug, 'pages');
 
   const fileDetails = await getFileWithDetails(markdownFilePath, true);

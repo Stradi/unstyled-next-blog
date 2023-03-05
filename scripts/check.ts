@@ -87,7 +87,7 @@ async function getAllStaticPages() {
 async function checkPost(slug: string, errors: TError[]) {
   const requiredFields = ['name', 'description', 'image', 'authors', 'tags'];
 
-  const filePath = path.resolve(__dirname, '..', '_content', 'posts', slug, 'index.md');
+  const filePath = path.resolve(__dirname, '..', '_content', 'posts', slug, 'index.mdx');
   const contents = await fs.readFile(filePath);
 
   const returnValue = {
@@ -293,7 +293,7 @@ async function checkTag(name: string, errors: TError[]) {
 async function checkPage(slug: string, errors: TError[]) {
   const requiredFields = ['name', 'description', 'image'];
 
-  const filePath = path.resolve(__dirname, '..', '_content', 'pages', slug, 'index.md');
+  const filePath = path.resolve(__dirname, '..', '_content', 'pages', slug, 'index.mdx');
   const contents = await fs.readFile(filePath);
 
   let frontmatter = null;

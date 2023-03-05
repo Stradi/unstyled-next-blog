@@ -47,7 +47,7 @@ async function getAllPosts() {
 
   const posts = [];
   for (const folder of folders) {
-    const content = await fs.readFile(path.join(dir, folder, 'index.md'));
+    const content = await fs.readFile(path.join(dir, folder, 'index.mdx'));
     const parsed = matter(content);
 
     posts.push({
@@ -68,7 +68,7 @@ async function getAllStaticPages() {
 
   const posts = [];
   for (const folder of folders) {
-    const content = await fs.readFile(path.join(dir, folder, 'index.md'));
+    const content = await fs.readFile(path.join(dir, folder, 'index.mdx'));
     const parsed = matter(content);
 
     posts.push({

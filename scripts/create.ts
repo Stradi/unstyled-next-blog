@@ -156,7 +156,7 @@ async function createResource(type: 'post' | 'author' | 'tag' | 'page', name: st
   };
 
   if (type === 'post' || type === 'page') {
-    filePath = path.resolve(filePath, slug, `index.md`);
+    filePath = path.resolve(filePath, slug, `index.mdx`);
   } else {
     filePath = path.resolve(filePath, `${slug}.json`);
   }
