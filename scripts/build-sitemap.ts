@@ -79,6 +79,8 @@ async function getAllStaticPages() {
 
 async function main() {
   console.log('Generating sitemap.xml...');
+
+  await fs.ensureDir(path.resolve(__dirname, '..', 'public'));
   const resources = [
     ...(await getAllPosts()),
     ...(await getAllAuthors()),

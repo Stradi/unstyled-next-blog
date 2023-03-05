@@ -85,6 +85,8 @@ async function getAllStaticPages() {
 
 async function main() {
   console.log('Building search index...');
+
+  await fs.ensureDir(path.resolve(__dirname, '..', 'public'));
   const index = await create({
     schema: {
       type: 'string',
