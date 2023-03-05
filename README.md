@@ -5,12 +5,12 @@ Unstyled Next Blog is a simple blog template built with one and only Next.js. It
 ## Features
 
 - Fast (just like every Next.js app)
-- Local Markdown adapter
-- Error checker for local Markdown adapter
+- File system based content adapter
 - Instant search
 - Automatic sitemap generation
 - Automatic OG image generation
 - Static pages (such as /about, /contact, etc.)
+- MDX support
 
 <sub>I will try to find more features to add here, I promise.<sub>
 
@@ -73,7 +73,7 @@ You can add posts to Unstyled Next Blog in two ways:
 
 Unstyled Next Blog uses a local Markdown adapter. This means that you can add posts by creating a folder and a Markdown file in the `_content/posts` folder.
 
-For example if you want to add a post called `Hello World`, you need to create a folder called `hello-world` in the `_content/posts` folder. Then, you need to create a file called `index.md` in the `hello-world` folder. The `index.md` file is the actual post. You can write your post in Markdown, with frontmatter.
+For example if you want to add a post called `Hello World`, you need to create a folder called `hello-world` in the `_content/posts` folder. Then, you need to create a file called `index.mdx` in the `hello-world` folder. The `index.mdx` file is the actual post. You can write your post in Markdown, with frontmatter.
 
 Here is an example of a post:
 
@@ -151,7 +151,7 @@ After that, it will ask you for the name of the resource you want to create.
 ? What is the name of the blog post? »
 ```
 
-After you name your resource, it will just create the required files for you (in this case, it just created a file in `_content/posts/hello-world/index.md` and filled it with the default settings).
+After you name your resource, it will just create the required files for you (in this case, it just created a file in `_content/posts/hello-world/index.mdx` and filled it with the default settings).
 
 ```bash
 > unstyled-next-blog@0.0.1 create
