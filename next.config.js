@@ -7,8 +7,8 @@ const nextConfig = {
         destination: '/page/index',
       },
       {
-        source: '/:path*',
-        destination: '/page/:path*',
+        source: '/:path',
+        destination: '/page/:path',
       },
     ];
   },
