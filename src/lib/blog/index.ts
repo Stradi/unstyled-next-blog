@@ -15,16 +15,16 @@ export interface BlogImage {
 }
 
 export interface BlogAuthor extends BlogResource {
-  image: BlogImage;
+  image: BlogImage | undefined;
 }
 
 export interface BlogTag extends BlogResource {
-  image: BlogImage;
+  image: BlogImage | undefined;
 }
 
 export interface BlogPost extends BlogResource {
   content: MDXRemoteSerializeResult;
-  image: BlogImage;
+  image: BlogImage | undefined;
   authors: BlogAuthor[];
   tags: BlogTag[];
 }

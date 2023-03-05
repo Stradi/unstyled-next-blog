@@ -37,6 +37,13 @@ export async function getPostBySlug(slug: string): Promise<BlogPost> {
   const authors = await populateAuthors(fileDetails.frontmatter.authors);
   const tags = await populateTags(fileDetails.frontmatter.tags);
 
+  const image = fileDetails.frontmatter.image
+    ? {
+        src: `/images/blog/${slug}/${fileDetails.frontmatter.image.src}`,
+        alt: fileDetails.frontmatter.image.alt,
+      }
+    : undefined;
+
   return {
     name: fileDetails.frontmatter.name,
     slug,
@@ -44,10 +51,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost> {
     createdAt: new Date(fileDetails.details.birthtime),
     updatedAt: new Date(fileDetails.details.mtime),
     content: renderableMarkdown,
-    image: {
-      src: `/images/blog/${slug}/${fileDetails.frontmatter.image.src}`,
-      alt: fileDetails.frontmatter.image.alt,
-    },
+    image,
     authors,
     tags,
   } as BlogPost;
@@ -87,9 +91,16 @@ export async function getAuthorByName(name: string): Promise<BlogAuthor> {
   const json = JSON.parse(fileDetails.content);
   delete json['$schema'];
 
-  if (json.image.src !== '') {
+  if (json.image && json.image.src !== '') {
     moveImageToPublicFolder('authors', `${path.join(AUTHORS_DIR, json.image.src)}`);
   }
+
+  const image = json.image
+    ? {
+        src: `/images/authors/${json.image.src}`,
+        alt: json.image.alt,
+      }
+    : undefined;
 
   return {
     name: json.name,
@@ -97,10 +108,7 @@ export async function getAuthorByName(name: string): Promise<BlogAuthor> {
     description: json.description,
     createdAt: fileDetails.details.birthtime,
     updatedAt: fileDetails.details.mtime,
-    image: {
-      src: `/images/authors/${json.image.src}`,
-      alt: json.image.alt,
-    },
+    image,
   } as BlogAuthor;
 }
 
@@ -111,9 +119,16 @@ export async function getAuthorBySlug(slug: string): Promise<BlogAuthor> {
   const json = JSON.parse(fileDetails.content);
   delete json['$schema'];
 
-  if (json.image.src !== '') {
+  if (json.image && json.image.src !== '') {
     moveImageToPublicFolder('authors', `${path.join(AUTHORS_DIR, json.image.src)}`);
   }
+
+  const image = json.image
+    ? {
+        src: `/images/authors/${json.image.src}`,
+        alt: json.image.alt,
+      }
+    : undefined;
 
   return {
     name: json.name,
@@ -121,10 +136,7 @@ export async function getAuthorBySlug(slug: string): Promise<BlogAuthor> {
     description: json.description,
     createdAt: fileDetails.details.birthtime,
     updatedAt: fileDetails.details.mtime,
-    image: {
-      src: `/images/authors/${json.image.src}`,
-      alt: json.image.alt,
-    },
+    image,
   } as BlogAuthor;
 }
 
@@ -152,9 +164,16 @@ export async function getTagByName(name: string): Promise<BlogTag> {
   const json = JSON.parse(fileDetails.content);
   delete json['$schema'];
 
-  if (json.image.src !== '') {
+  if (json.image && json.image.src !== '') {
     moveImageToPublicFolder('tags', `${path.join(TAGS_DIR, json.image.src)}`);
   }
+
+  const image = json.image
+    ? {
+        src: `/images/tags/${json.image.src}`,
+        alt: json.image.alt,
+      }
+    : undefined;
 
   return {
     name: json.name,
@@ -162,10 +181,7 @@ export async function getTagByName(name: string): Promise<BlogTag> {
     description: json.description,
     createdAt: fileDetails.details.birthtime,
     updatedAt: fileDetails.details.mtime,
-    image: {
-      src: `/images/tags/${json.image.src}`,
-      alt: json.image.alt,
-    },
+    image,
   } as BlogTag;
 }
 
@@ -176,9 +192,16 @@ export async function getTagBySlug(slug: string): Promise<BlogTag> {
   const json = JSON.parse(fileDetails.content);
   delete json['$schema'];
 
-  if (json.image.src !== '') {
+  if (json.image && json.image.src !== '') {
     moveImageToPublicFolder('tags', `${path.join(TAGS_DIR, json.image.src)}`);
   }
+
+  const image = json.image
+    ? {
+        src: `/images/tags/${json.image.src}`,
+        alt: json.image.alt,
+      }
+    : undefined;
 
   return {
     name: json.name,
@@ -186,10 +209,7 @@ export async function getTagBySlug(slug: string): Promise<BlogTag> {
     description: json.description,
     createdAt: fileDetails.details.birthtime,
     updatedAt: fileDetails.details.mtime,
-    image: {
-      src: `/images/tags/${json.image.src}`,
-      alt: json.image.alt,
-    },
+    image,
   } as BlogTag;
 }
 
@@ -211,6 +231,13 @@ export async function getStaticPageBySlug(slug: string): Promise<StaticPage> {
   const fileDetails = await getFileWithDetails(markdownFilePath, true);
   const renderableMarkdown = await convertToMarkdown(fileDetails.content, slug, 'pages');
 
+  const image = fileDetails.frontmatter.image
+    ? {
+        src: `/images/pages/${slug}/${fileDetails.frontmatter.image.src}`,
+        alt: fileDetails.frontmatter.image.alt,
+      }
+    : undefined;
+
   return {
     name: fileDetails.frontmatter.name,
     slug,
@@ -218,10 +245,7 @@ export async function getStaticPageBySlug(slug: string): Promise<StaticPage> {
     createdAt: new Date(fileDetails.details.birthtime),
     updatedAt: new Date(fileDetails.details.mtime),
     content: renderableMarkdown,
-    image: {
-      src: `/images/pages/${slug}/${fileDetails.frontmatter.image.src}`,
-      alt: fileDetails.frontmatter.image.alt,
-    },
+    image,
   } as StaticPage;
 }
 
